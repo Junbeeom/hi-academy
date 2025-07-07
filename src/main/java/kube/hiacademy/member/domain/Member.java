@@ -33,8 +33,10 @@ public class Member extends AbstractEntity {
         Member member = new Member();
         member.name = requireNonNull(name);
         member.type = requireNonNull(type);
-        member.loginKey =
+        member.loginKey = LoginKey.generate();
+        member.status = Status.PENDING;
 
+        return member;
     }
 
 
