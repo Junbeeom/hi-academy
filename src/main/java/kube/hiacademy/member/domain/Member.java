@@ -31,12 +31,28 @@ public class Member extends AbstractEntity {
 
     public static Member register(String name, Type type) {
         Member member = new Member();
+
         member.name = requireNonNull(name);
         member.type = requireNonNull(type);
         member.loginKey = LoginKey.generate();
         member.status = Status.PENDING;
 
         return member;
+    }
+
+    public void activate(Status status) {
+        if (Status.PENDING != status) {
+            throw new IllegalArgumentException("회원의 상태가 PENDING 상태가 아닙니다.");
+        }
+        this.status = Status.ACTIVE;
+    }
+
+    public void deActivate(Status status) {
+        if (Status.ACTIVE != status) {
+            throw new IllegalArgumentException("회원의 상태가 ACTIVATE 상태가 아닙니다.");
+        }
+
+        this.status = Status.DEACTIVATED;
     }
 
 
