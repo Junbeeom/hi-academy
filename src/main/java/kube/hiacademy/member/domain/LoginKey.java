@@ -31,4 +31,8 @@ public record LoginKey(String loginKey) {
             throw new RuntimeException(e);
         }
     }
+
+    public int getSize() {
+        return loginKey.length();
+    }
 }
