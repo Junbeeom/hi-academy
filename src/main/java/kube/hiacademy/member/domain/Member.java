@@ -44,6 +44,7 @@ public class Member extends AbstractEntity {
         if (Status.PENDING != status) {
             throw new IllegalArgumentException("회원의 상태가 PENDING 상태가 아닙니다.");
         }
+
         this.status = Status.ACTIVE;
     }
 

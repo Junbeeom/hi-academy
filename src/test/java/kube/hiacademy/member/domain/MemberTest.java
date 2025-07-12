@@ -11,8 +11,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MemberTest {
-    Member member;
-
     @Test
     void Member_isNotNull() {
         Member generatedMember = Member.register("junbeom", ADMIN);
@@ -25,17 +23,20 @@ class MemberTest {
     }
 
     @Test
-    void pendingMember_shouldBeActive() {
-        Member junbeom = member.register("junbeom", ADMIN);
+    void pendingMember_ShouldBeActive() {
+        Member junbeom = Member.register("junbeom", ADMIN);
         junbeom.activate(junbeom.getStatus());
 
         assertThat(junbeom.getStatus()).isEqualTo(ACTIVE);
     }
 
     @Test
-    void notPendingMember_shouldBeThrow() {
-        assertThatThrownBy(() -> member.activate())
-                .isInstanceOf(IllegalArgumentException.class);
+    void deActivate_NotActivateMember_ShouldBeThrowException() {
+        Member junbeom = Member.register("junbeom", ADMIN);
+
+        assertThatThrownBy(() -> junbeom.deActivate(junbeom.getStatus()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("회원의 상태가 ACTIVATE 상태가 아닙니다.");
     }
 
 }
