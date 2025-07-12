@@ -1,0 +1,70 @@
+package kube.hiacademy.member.domain;
+
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
+
+import static java.util.Objects.requireNonNull;
+
+@Entity
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends AbstractEntity {
+
+    @Embedded
+    @NaturalId
+    private LoginKey loginKey;
+
+    private String name;
+
+    @Enumerated
+    private Type type;
+
+    @Enumerated
+    private Status status;
+
+    public static Member register(MemberCreateReqeust createReqeust) {
+        Member member = new Member();
+
+        member.name = requireNonNull(createReqeust.name());
+        member.type = requireNonNull(createReqeust.type());
+        member.loginKey = LoginKey.generate();
+        member.status = Status.PENDING;
+
+        return member;
+    }
+
+    public void activate(Status status) {
+        if (Status.PENDING != status) {
+            throw new IllegalArgumentException("회원의 상태가 PENDING 상태가 아닙니다.");
+        }
+
+        this.status = Status.ACTIVE;
+    }
+
+    public void deActivate(Status status) {
+        if (Status.ACTIVE != status) {
+            throw new IllegalArgumentException("회원의 상태가 ACTIVATE 상태가 아닙니다.");
+        }
+
+        this.status = Status.DEACTIVATED;
+    }
+
+    public void changeName(String name) {
+        this.name = requireNonNull(name);
+    }
+
+    public void changeType(Type type) {
+        this.type = type;
+    }
+
+
+
+
+}
