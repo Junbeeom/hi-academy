@@ -29,11 +29,11 @@ public class Member extends AbstractEntity {
     @Enumerated
     private Status status;
 
-    public static Member register(String name, Type type) {
+    public static Member register(MemberCreateReqeust createReqeust) {
         Member member = new Member();
 
-        member.name = requireNonNull(name);
-        member.type = requireNonNull(type);
+        member.name = requireNonNull(createReqeust.name());
+        member.type = requireNonNull(createReqeust.type());
         member.loginKey = LoginKey.generate();
         member.status = Status.PENDING;
 
@@ -54,6 +54,14 @@ public class Member extends AbstractEntity {
         }
 
         this.status = Status.DEACTIVATED;
+    }
+
+    public void changeName(String name) {
+        this.name = requireNonNull(name);
+    }
+
+    public void changeType(Type type) {
+        this.type = type;
     }
 
 
